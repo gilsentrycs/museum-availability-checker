@@ -42,3 +42,4 @@ Set these in GitHub Secrets for notifications:
 
 ## Current Status
 Both museums are currently sold out for October 7th, 2025. The script will notify you when availability opens up.
+# Museum Availability Checker - Active
