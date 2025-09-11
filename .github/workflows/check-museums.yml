@@ -1,0 +1,55 @@
+name: Museum Availability Checker
+
+on:
+  schedule:
+    # Run every 20 minutes
+    - cron: '*/20 * * * *'
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  check-museums:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        playwright install chromium
+    
+    - name: Check Chichu Art Museum
+      env:
+        TARGET_URL: "https://benesse-artsite.eventos.tokyo/web/portal/797/event/8483/module/booth/239565/176695?language=eng"
+        TARGET_DATE: "2025-10-07"
+        HEADLESS: "1"
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+        EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+      run: |
+        echo "🎨 Checking Chichu Art Museum..."
+        python chichu_availability_checker.py --dates 2025-10-07
+    
+    - name: Check Teshima Art Museum
+      env:
+        TARGET_URL: "https://benesse-artsite.eventos.tokyo/web/portal/797/event/8483/module/booth/239565/185773?language=eng"
+        TARGET_DATE: "2025-10-07"
+        HEADLESS: "1"
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+        EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+      run: |
+        echo "🏛️ Checking Teshima Art Museum..."
+        python chichu_availability_checker.py --dates 2025-10-07
