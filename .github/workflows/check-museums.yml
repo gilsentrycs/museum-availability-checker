@@ -31,10 +31,9 @@ jobs:
         HEADLESS: "1"
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+        EMAIL_USER: ${{ secrets.EMAIL_USER }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         EMAIL_TO: ${{ secrets.EMAIL_TO }}
-        SMTP_PASS: ${{ secrets.SMTP_PASS }}
-        SMTP_USER: ${{ secrets.SMTP_USER }}
       run: |
         echo "🎨 Checking Chichu Art Museum..."
         python chichu_availability_checker.py --dates 2025-10-07
@@ -46,10 +45,9 @@ jobs:
         HEADLESS: "1"
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+        EMAIL_USER: ${{ secrets.EMAIL_USER }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         EMAIL_TO: ${{ secrets.EMAIL_TO }}
-        SMTP_PASS: ${{ secrets.SMTP_PASS }}
-        SMTP_USER: ${{ secrets.SMTP_USER }}
       run: |
         echo "🏛️ Checking Teshima Art Museum..."
         python chichu_availability_checker.py --dates 2025-10-07
