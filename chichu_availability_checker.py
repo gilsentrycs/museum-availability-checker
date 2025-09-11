@@ -488,6 +488,25 @@ Date          Status        Evidence
             for r in results:
                 print(f"{r['date']}  {r['verdict']:<12}  {r['evidence']}")
 
+            # 🚨 NOTIFICATION LOGIC: Send alerts if any date is available
+            available_dates = [r for r in results if r['verdict'] == 'AVAILABLE']
+            if available_dates:
+                museum_name = "Chichu Art Museum" if "176695" in TARGET_URL else "Teshima Art Museum"
+                dates_str = ", ".join([r['date'] for r in available_dates])
+                msg = (
+                    f"🎉 {museum_name} tickets are now AVAILABLE!\n"
+                    f"📅 Available dates: {dates_str}\n"
+                    f"🔗 Book immediately: {TARGET_URL}\n\n"
+                    f"Details:\n"
+                )
+                for r in available_dates:
+                    msg += f"• {r['date']}: {r['evidence']}\n"
+                
+                print(f"[ALERT] 🚨 Sending notifications for available dates: {dates_str}")
+                desktop_notify(f"{museum_name} tickets available!", msg)
+                telegram_notify(msg)
+                email_notify(f"{museum_name} tickets available!", msg)
+
         finally:
             context.close()
             browser.close()
