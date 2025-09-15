@@ -35,8 +35,8 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         EMAIL_TO: ${{ secrets.EMAIL_TO }}
       run: |
-        echo "🎨 Checking Chichu Art Museum..."
-        python chichu_availability_checker.py --dates 2025-10-07
+        echo "🎨 Checking Chichu Art Museum for multiple dates..."
+        python chichu_availability_checker.py --dates 2025-10-07,2025-10-09,2025-10-10,2025-10-11
     
     - name: Check Teshima Art Museum
       env:
@@ -49,5 +49,5 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         EMAIL_TO: ${{ secrets.EMAIL_TO }}
       run: |
-        echo "🏛️ Checking Teshima Art Museum..."
-        python chichu_availability_checker.py --dates 2025-10-07
+        echo "🏛️ Checking Teshima Art Museum for multiple dates..."
+        python chichu_availability_checker.py --dates 2025-10-07,2025-10-09,2025-10-10,2025-10-11
