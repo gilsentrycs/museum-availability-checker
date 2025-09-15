@@ -65,12 +65,12 @@ TIMEOUT_MS = int(os.getenv("TIMEOUT_MS", "45000"))
 DESKTOP_NOTIFY = os.getenv("DESKTOP_NOTIFY", "0") == "1"
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-EMAIL_FROM = os.getenv("EMAIL_FROM")
+EMAIL_FROM = os.getenv("EMAIL_FROM") or os.getenv("EMAIL_USER")
 EMAIL_TO = os.getenv("EMAIL_TO")
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER") or EMAIL_FROM
-SMTP_PASS = os.getenv("SMTP_PASS")
+SMTP_PASS = os.getenv("SMTP_PASS") or os.getenv("EMAIL_PASSWORD")
 
 # Only treat the explicit calendar symbols as positive.
  # Many pages include the words “Available/Availability” in legends/notes.
@@ -112,20 +112,29 @@ def telegram_notify(message: str) -> None:
 
 
 def email_notify(subject: str, body: str) -> None:
+    print(f"[debug] Email notify called: subject='{subject[:50]}...'")
+    print(f"[debug] EMAIL_FROM: {'✅' if EMAIL_FROM else '❌'}")
+    print(f"[debug] EMAIL_TO: {'✅' if EMAIL_TO else '❌'}")
+    print(f"[debug] SMTP_PASS: {'✅' if SMTP_PASS else '❌'}")
+    
     if not (EMAIL_FROM and EMAIL_TO and SMTP_PASS):
+        print(f"[warn] Email not sent - missing configuration")
         return
+        
     msg = MIMEText(body)
     msg["Subject"] = subject
     msg["From"] = EMAIL_FROM
     msg["To"] = EMAIL_TO
     try:
+        print(f"[info] Attempting to send email via {SMTP_HOST}:{SMTP_PORT}")
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as s:
             s.starttls()
             if SMTP_USER and SMTP_PASS:
                 s.login(SMTP_USER, SMTP_PASS)
             s.sendmail(EMAIL_FROM, [EMAIL_TO], msg.as_string())
+        print(f"[info] ✅ Email sent successfully to {EMAIL_TO}")
     except Exception as e:
-        print(f"[warn] email notify failed: {e}")
+        print(f"[warn] ❌ Email notify failed: {e}")
 
 
 def looks_available(text: str) -> bool:
